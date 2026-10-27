@@ -1,9 +1,0 @@
-!!!. Permitir remoção e atualização de imagens no edit-produtos.php com o arquivo JS upload-image.js (Parcial/Limitado)
-
-1. Colocar mais coisas na Dashboard
-
-OBS.: Trazer quantidade de itens vendidos (produto_venda com SUM())
------ Trazer total de Ganho de dinheiro (Venda valor final com SUM())
------ Funcionários cadastrados
------ Clientes cadastrados
------ Produtos novos (até 7 dias atras)
