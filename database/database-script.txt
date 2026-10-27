@@ -1,0 +1,230 @@
+CREATE DATABASE gamebit CHARACTER SET = utf8 COLLATE utf8_general_ci;
+USE gamebit;
+
+
+CREATE TABLE cargo (
+id_cargo INT PRIMARY KEY AUTO_INCREMENT,
+status TINYINT UNSIGNED NOT NULL,
+nome VARCHAR(100) UNIQUE NOT NULL,
+observacao VARCHAR(100),
+data_cadastro DATETIME NOT NULL
+);
+
+
+CREATE TABLE funcionario (
+id_func INT PRIMARY KEY AUTO_INCREMENT,
+id_cargo INT,
+nome VARCHAR(100) NOT NULL,
+nome_social VARCHAR(100),
+foto VARCHAR(100),
+data_nascimento DATE NOT NULL,
+sexo CHAR(1) NOT NULL,
+estado_civil VARCHAR(35),
+cpf CHAR(14) UNIQUE NOT NULL,
+rg VARCHAR(12),
+salario DECIMAL(7,2),
+endereco VARCHAR(70) NOT NULL,
+numero INT(4) NOT NULL,
+complemento VARCHAR(40),
+bairro VARCHAR(30) NOT NULL,
+cidade VARCHAR(40) NOT NULL,
+estado CHAR(2) NOT NULL,
+cep VARCHAR(9) NOT NULL,
+telefone_residencial CHAR(14),
+telefone_celular CHAR(15),
+email VARCHAR(255) NOT NULL,
+usuario VARCHAR(20) UNIQUE NOT NULL,
+senha VARCHAR(255) NOT NULL,
+tipo_acesso TINYINT UNSIGNED NOT NULL,
+data_cadastro DATETIME NOT NULL,
+status TINYINT UNSIGNED NOT NULL,
+FOREIGN KEY(id_cargo) REFERENCES cargo(id_cargo)
+);
+
+
+CREATE TABLE marca (
+id_marca INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) UNIQUE NOT NULL,
+status TINYINT UNSIGNED NOT NULL,
+data_cadastro DATETIME NOT NULL
+);
+
+
+CREATE TABLE plataforma (
+id_plataforma INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) UNIQUE NOT NULL,
+status TINYINT UNSIGNED NOT NULL,
+data_cadastro DATETIME NOT NULL
+);
+
+
+CREATE TABLE genero_jogo (
+id_genero INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) UNIQUE NOT NULL,
+data_cadastro DATETIME NOT NULL,
+status TINYINT UNSIGNED NOT NULL
+);
+
+
+CREATE TABLE categoria (
+id_categoria INT(5) PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) UNIQUE NOT NULL,
+data_cadastro DATETIME NOT NULL,
+status TINYINT UNSIGNED NOT NULL
+);
+
+
+CREATE TABLE desenvolvedor (
+id_desenvolvedor INT(5) PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) UNIQUE NOT NULL,
+status TINYINT UNSIGNED NOT NULL,
+data_cadastro DATETIME NOT NULL
+);
+
+
+CREATE TABLE produto (
+id_produto INT PRIMARY KEY AUTO_INCREMENT,
+id_desenvolvedor INT,
+id_plataforma INT,
+id_genero INT,
+id_categoria INT NOT NULL,
+id_marca INT,
+nome VARCHAR(255),
+estoque INT(5),
+cor VARCHAR(35),
+data_cadastro DATETIME,
+cpu_min VARCHAR(50),
+gpu_min VARCHAR(50),
+so_min VARCHAR(50),
+ram_min VARCHAR(10),
+preco_custo DECIMAL(8,2) NOT NULL,
+lucro DECIMAL(5,2) NOT NULL,
+preco_venda DECIMAL(8,2) NOT NULL,
+status_promocao TINYINT UNSIGNED,
+desconto DECIMAL(5,2),
+preco_promocao DECIMAL(8,2),
+descricao VARCHAR(150),
+imagem_principal VARCHAR(255),
+imagem_2 VARCHAR(255),
+imagem_3 VARCHAR(255),
+imagem_4 VARCHAR(255),
+armazenamento VARCHAR(10),
+leitor TINYINT UNSIGNED,
+voltagem VARCHAR(30),
+status TINYINT UNSIGNED NOT NULL,
+FOREIGN KEY(id_desenvolvedor) REFERENCES desenvolvedor (id_desenvolvedor),
+FOREIGN KEY(id_plataforma) REFERENCES plataforma (id_plataforma),
+FOREIGN KEY(id_genero) REFERENCES genero_jogo (id_genero),
+FOREIGN KEY(id_categoria) REFERENCES categoria (id_categoria),
+FOREIGN KEY(id_marca) REFERENCES marca (id_marca)
+);
+
+
+CREATE TABLE cliente (
+id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100),
+rg VARCHAR(20),
+cpf CHAR(14) UNIQUE NOT NULL,
+status TINYINT UNSIGNED,
+endereco VARCHAR(70) NOT NULL,
+complemento VARCHAR(40),
+cidade VARCHAR(100) NOT NULL,
+cep CHAR(9),
+numero INT(5),
+bairro VARCHAR(50),
+estado CHAR(2) NOT NULL,
+email VARCHAR(100) NOT NULL,
+senha VARCHAR(255) NOT NULL,
+telefone_residencial CHAR(14),
+telefone_celular CHAR(15),
+data_cadastro DATETIME NOT NULL,
+sexo CHAR(1) NOT NULL,
+data_nascimento DATE NOT NULL,
+estado_civil VARCHAR(35)
+);
+
+
+CREATE TABLE venda (
+id_venda INT PRIMARY KEY AUTO_INCREMENT,
+id_cliente INT,
+id_func INT,
+data DATETIME,
+status TINYINT UNSIGNED,
+forma_pagamento VARCHAR(60),
+valor_bruto DECIMAL(7,2),
+percentual_desconto DECIMAL(4, 2),
+preco_desconto DECIMAL(7, 2),
+valor_total DECIMAL(7,2),
+FOREIGN KEY(id_cliente) REFERENCES cliente (id_cliente),
+FOREIGN KEY(id_func) REFERENCES funcionario (id_func)
+);
+
+
+CREATE TABLE produto_venda (
+id_itens INT PRIMARY KEY AUTO_INCREMENT,
+id_produto INT,
+id_venda INT,
+quantidade INT,
+valor_item DECIMAL(7,2),
+valor_total DECIMAL(10,2),
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
+FOREIGN KEY(id_venda) REFERENCES venda (id_venda)
+);
+
+INSERT INTO categoria(nome, status, data_cadastro) VALUES("Jogos", 1, '2026-01-01 00:00:00');
+INSERT INTO categoria(nome, status, data_cadastro) VALUES("Consoles", 1, '2026-01-01 00:00:00');
+INSERT INTO cargo(status, nome, observacao, data_cadastro) VALUES(1, 'Administrador', 'Administrador geral do sistema.', '2026-01-01 00:00:00');
+INSERT INTO cargo(status, nome, observacao, data_cadastro) VALUES(1, 'Vendedor', 'Responsável por realizar as vendas.', '2026-01-01 00:00:00');
+INSERT INTO funcionario (
+    foto,
+    id_cargo,
+    nome,
+    nome_social,
+    data_nascimento,
+    sexo,
+    estado_civil,
+    cpf,
+    rg,
+    salario,
+    endereco,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    telefone_residencial,
+    telefone_celular,
+    email,
+    usuario,
+    senha,
+    tipo_acesso,
+    data_cadastro,
+    status
+) VALUES (
+    'admin/admin-photo.png',          -- foto
+    1,                                -- id_cargo
+    'Administrador',                  -- nome
+    '',                               -- nome_social
+    '2000-01-01',                     -- data_nascimento
+    'N',                              -- sexo ('M', 'F' ou outro)
+    'Solteiro(a)',                    -- estado_civil
+    '000.000.000-00',                 -- cpf
+    '00.000.000-0',                   -- rg
+    0.00,                             -- salario (número, sem aspas)
+    '',                               -- endereco
+    '',                               -- numero
+    '',                               -- complemento
+    '',                               -- bairro
+    '',                               -- cidade
+    '',                               -- estado
+    '00000-000',                      -- cep
+    '',                               -- telefone_residencial
+    '',                               -- telefone_celular
+    'admin@admin.com',                -- email
+    'ADMIN',                          -- usuario
+    'ADMIN',                          -- senha (idealmente hash, mas mantido conforme seu pedido)
+    1,                                -- tipo_acesso
+    '2026-01-01 00:00:00',            -- data_cadastro
+    1                                 -- status
+);
